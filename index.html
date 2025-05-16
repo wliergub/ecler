@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOCTURNE | Dark Visual Arts</title>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600&family=DM+Sans:ital,opsz@0,9..40;1,9..40&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* ===== Dark Theme Variables ===== */
         :root {
             --void: #0A0A0A;
             --obsidian: #121212;
             --smoke: #1A1A1A;
             --ember: #8B0000;
             --silver: #E8E8E8;
-            --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* ===== Base Styles ===== */
         * {
             margin: 0;
             padding: 0;
@@ -30,9 +28,10 @@
             font-family: 'Archivo', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
+            scroll-behavior: smooth;
+            scroll-padding-top: 2rem;
         }
 
-        /* ===== Textured Overlay ===== */
         body::after {
             content: '';
             position: fixed;
@@ -41,12 +40,11 @@
             width: 100%;
             height: 100%;
             background-image: var(--grain);
-            opacity: 0.12;
+            opacity: 0.06;
             pointer-events: none;
             z-index: 1000;
         }
 
-        /* ===== Navigation ===== */
         .nav-sidebar {
             position: fixed;
             left: 2rem;
@@ -86,24 +84,33 @@
             width: 100%;
         }
 
-        /* ===== Hero Section ===== */
+        /* Content Sections */
+        section {
+            padding: 8rem 4rem;
+            min-height: 100vh;
+            border-bottom: 1px solid var(--smoke);
+        }
+
+        #archive { background: var(--obsidian); }
+        #exhibitions { background: var(--void); }
+        #publications { background: var(--obsidian); }
+        #contact { background: var(--void); }
+
+        .section-header {
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--ember);
+            display: inline-block;
+        }
+
+        /* Hero Section */
         .hero {
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            overflow: hidden;
-        }
-
-        .hero-vignette {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, 
-                rgba(18,18,18,0) 0%,
-                rgba(18,18,18,1) 100%);
-            z-index: 1;
         }
 
         .hero-title {
@@ -111,103 +118,23 @@
             font-weight: 300;
             letter-spacing: -0.03em;
             text-align: center;
-            z-index: 2;
-            mix-blend-mode: difference;
         }
 
-        /* ===== Gallery Grid ===== */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            padding: 4rem;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            aspect-ratio: 1;
-            background: var(--smoke);
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .gallery-item:hover {
-            transform: translateY(-8px);
-        }
-
-        .gallery-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.92;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-item:hover .gallery-image {
-            opacity: 1;
-        }
-
-        .gallery-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 2rem;
-            background: linear-gradient(transparent 0%, rgba(10,10,10,0.9) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
-        }
-
-        /* ===== Footer ===== */
-        .footer {
-            padding: 4rem;
-            border-top: 1px solid var(--smoke);
-            margin-top: 6rem;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4rem;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .footer-section h3 {
-            font-weight: 400;
-            margin-bottom: 1.5rem;
-            color: var(--ember);
-        }
-
-        /* ===== Interactions ===== */
-        ::view-transition-old(root),
-        ::view-transition-new(root) {
-            animation-duration: 1.2s;
-        }
-
-        /* ===== Mobile Adaptations ===== */
         @media (max-width: 768px) {
+            section {
+                padding: 4rem 2rem;
+            }
+            
             .nav-sidebar {
-                display: none;
+                left: 1rem;
             }
-
-            .gallery-grid {
-                grid-template-columns: 1fr;
-                padding: 2rem;
+            
+            .section-header {
+                font-size: 2rem;
             }
-
+            
             .hero-title {
                 font-size: 12vw;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -215,6 +142,7 @@
 <body>
     <nav class="nav-sidebar">
         <ul class="nav-menu">
+            <li><a href="#hero" class="nav-link">Home</a></li>
             <li><a href="#archive" class="nav-link">Archive</a></li>
             <li><a href="#exhibitions" class="nav-link">Exhibitions</a></li>
             <li><a href="#publications" class="nav-link">Publications</a></li>
@@ -223,67 +151,68 @@
     </nav>
 
     <main>
-        <section class="hero">
-            <div class="hero-vignette"></div>
+        <section id="hero" class="hero">
             <h1 class="hero-title">Nocturnal<br>Observations</h1>
         </section>
 
-        <section class="gallery-grid">
-            <article class="gallery-item">
-                <img src="https://source.unsplash.com/random/800x800?night" alt="Night Vision" class="gallery-image">
-                <div class="gallery-overlay">
-                    <h3>Urban Nocturne</h3>
-                    <p>2024 Series</p>
-                </div>
-            </article>
-            <!-- Repeat gallery items -->
+        <section id="archive">
+            <h2 class="section-header">Archive</h2>
+            <!-- Archive content -->
+        </section>
+
+        <section id="exhibitions">
+            <h2 class="section-header">Exhibitions</h2>
+            <!-- Exhibitions content -->
+        </section>
+
+        <section id="publications">
+            <h2 class="section-header">Publications</h2>
+            <!-- Publications content -->
+        </section>
+
+        <section id="contact">
+            <h2 class="section-header">Contact</h2>
+            <!-- Contact content -->
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="footer-grid">
-            <div class="footer-section">
-                <h3>Studio</h3>
-                <p>Schwarzwaldstraße 24<br>
-                10117 Berlin</p>
-            </div>
-            <div class="footer-section">
-                <h3>Connect</h3>
-                <p><a href="#">Archive</a><br>
-                <a href="#">Journal</a></p>
-            </div>
-            <div class="footer-section">
-                <h3>Commission</h3>
-                <p><a href="#">inquiry@nocturne.studio</a><br>
-                +49 30 123 4567</p>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        // Smooth scroll behavior
+        // Smooth scroll with offset
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+                const target = document.querySelector(this.getAttribute('href'));
+                const offset = 96; // Adjust scroll offset
+                
+                window.scrollTo({
+                    top: target.offsetTop - offset,
+                    behavior: 'smooth'
                 });
             });
         });
 
-        // Intersection Observer for animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = "1";
-                    entry.target.style.transform = "translateY(0)";
+        // Section observer for active navigation
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
                 }
             });
-        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.gallery-item').forEach((el) => {
-            observer.observe(el);
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
         });
     </script>
 </body>
