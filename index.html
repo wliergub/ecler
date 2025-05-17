@@ -252,6 +252,54 @@
                 transform: translateY(0);
             }
         }
+        /* Textured Background */
+body {
+    background-image: 
+        linear-gradient(45deg, var(--secondary) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--secondary) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--secondary) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--secondary) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* Gallery Button Styles */
+.gallery-item::after {
+    content: 'View Collection';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--text);
+    text-align: center;
+    font-weight: 500;
+    transform: translateY(100%);
+    transition: var(--transition);
+    z-index: 1;
+}
+
+.gallery-item:hover::after {
+    transform: translateY(0);
+}
+
+/* Collection Lightbox Grid */
+.collection-lightbox {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.collection-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 4px;
+}
     </style>
 </head>
 <body>
@@ -289,6 +337,9 @@
         </section>
 
         <section id="gallery" class="gallery">
+            <button class="gallery-item" onclick="openCollection('collection1')">
+    <img src="https://source.unsplash.com/random/600x800/?model,photoshoot,1" loading="lazy">
+            </button>
             <div class="gallery-item" onclick="openLightbox('https://source.unsplash.com/random/600x800/?model,photoshoot,1')">
                 <img src="https://source.unsplash.com/random/600x800/?model,photoshoot,1" loading="lazy">
             </div>
@@ -330,11 +381,11 @@
         </section>
 
         <div class="lightbox" id="lightbox">
-            <span class="close-btn" onclick="closeLightbox()">&times;</span>
-            <div class="lightbox-content">
-                <img id="lightbox-img" src="" alt="Enlarged view">
-            </div>
+    <span class="close-btn" onclick="closeLightbox()">&times;</span>
+        <div class="lightbox-content">
+            <div class="collection-lightbox" id="collectionLightbox"></div>
         </div>
+    </div>
     </main>
 
     <footer class="footer">
@@ -358,18 +409,38 @@
             slides[currentSlide].classList.add('active');
         }
         setInterval(nextSlide, 5000);
+        //additional
+        const collections = {
+    collection1: [
+        'https://source.unsplash.com/random/800x1000/?model,studio,1',
+        'https://source.unsplash.com/random/800x1000/?model,studio,2',
+        // Add more image URLs...
+    ],
+    collection2: [
+        'https://source.unsplash.com/random/800x1000/?model,outdoor,1',
+        'https://source.unsplash.com/random/800x1000/?model,outdoor,2',
+        // Add more image URLs...
+    ]
+};
 
-        // Lightbox
-        function openLightbox(imgSrc) {
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImg = document.getElementById('lightbox-img');
-            lightboxImg.src = imgSrc;
-            lightbox.classList.add('active');
-        }
+function openCollection(collectionId) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('collectionLightbox');
+    lightboxContent.innerHTML = '';
+    
+    collections[collectionId].forEach(imgUrl => {
+        const img = document.createElement('img');
+        img.src = imgUrl;
+        img.className = 'collection-image';
+        lightboxContent.appendChild(img);
+    });
 
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-        }
+    lightbox.classList.add('active');
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+}
 
         // Form Handling
         function handleSubmit(e) {
